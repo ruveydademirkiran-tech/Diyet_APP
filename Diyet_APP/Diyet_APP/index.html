@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Antrenman Programı — Diyetisyen Rüveyda</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F7F3EE;
+    --ink: #1C1712;
+    --terra: #B5623E;
+    --sage: #6B8F71;
+    --blush: #E8C9B5;
+    --warm: #F0E8DF;
+    --dusty: #9A8878;
+    --gold: #C4974A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    font-family: 'Jost', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--ink);
+    padding: 64px 24px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(181,98,62,0.3) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 50%, rgba(107,143,113,0.2) 0%, transparent 60%);
+  }
+
+  .hero-tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--blush);
+    border: 1px solid rgba(232,201,181,0.3);
+    padding: 6px 18px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 7vw, 64px);
+    color: var(--cream);
+    line-height: 1.1;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .hero h1 em {
+    color: var(--terra);
+    font-style: italic;
+  }
+
+  .hero p {
+    font-size: 15px;
+    color: rgba(247,243,238,0.6);
+    font-weight: 300;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.7;
+    position: relative;
+  }
+
+  /* MAIN */
+  .main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 48px 24px;
+  }
+
+  /* FORM CARD */
+  .form-card {
+    background: white;
+    border-radius: 24px;
+    padding: 36px;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 40px rgba(28,23,18,0.06);
+    border: 1px solid rgba(232,201,181,0.3);
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .form-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--ink);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .form-title span {
+    width: 32px;
+    height: 32px;
+    background: var(--warm);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  .field {
+    margin-bottom: 20px;
+  }
+
+  .field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--dusty);
+    margin-bottom: 8px;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid #EDE5DC;
+    border-radius: 12px;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--cream);
+    outline: none;
+    transition: border-color 0.2s ease;
+    appearance: none;
+  }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    border-color: var(--terra);
+  }
+
+  .field textarea {
+    resize: vertical;
+    min-height: 90px;
+  }
+
+  .field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%239A8878' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .chip {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1.5px solid #EDE5DC;
+    font-size: 13px;
+    color: var(--dusty);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: var(--cream);
+    font-family: 'Jost', sans-serif;
+  }
+
+  .chip.active {
+    background: var(--terra);
+    border-color: var(--terra);
+    color: white;
+  }
+
+  .chip:hover:not(.active) {
+    border-color: var(--terra);
+    color: var(--terra);
+  }
+
+  .btn {
+    width: 100%;
+    padding: 18px;
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+    border-radius: 14px;
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  .btn:hover:not(:disabled) {
+    background: var(--terra);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(181,98,62,0.3);
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  /* SPINNER */
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(247,243,238,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  /* RESULT */
+  .result-card {
+    background: white;
+    border-radius: 24px;
+    padding: 36px;
+    box-shadow: 0 4px 40px rgba(28,23,18,0.06);
+    border: 1px solid rgba(107,143,113,0.2);
+    animation: fadeUp 0.5s ease forwards;
+    display: none;
+  }
+
+  .result-card.visible { display: block; }
+
+  .result-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--warm);
+  }
+
+  .result-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, var(--sage), #4a7a52);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+
+  .result-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--ink);
+  }
+
+  .result-subtitle {
+    font-size: 12px;
+    color: var(--dusty);
+    margin-top: 2px;
+  }
+
+  .result-text {
+    font-size: 14px;
+    line-height: 1.9;
+    color: #3a3028;
+    white-space: pre-wrap;
+  }
+
+  .shopier-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--terra), #8B4A2E);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    margin-top: 24px;
+    transition: all 0.2s ease;
+  }
+
+  .shopier-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(181,98,62,0.4);
+  }
+
+  /* ERROR */
+  .error-card {
+    background: #FFF5F5;
+    border: 1px solid #FFD5D5;
+    border-radius: 14px;
+    padding: 16px 20px;
+    color: #C0392B;
+    font-size: 14px;
+    margin-top: 16px;
+    display: none;
+  }
+
+  .error-card.visible { display: block; }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 32px 24px;
+    font-size: 12px;
+    color: var(--dusty);
+    border-top: 1px solid var(--warm);
+  }
+
+  .footer a {
+    color: var(--terra);
+    text-decoration: none;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @media (max-width: 480px) {
+    .form-card, .result-card { padding: 24px; }
+    .hero { padding: 48px 20px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">dytruveyda.com × AI</div>
+  <h1>Kişisel<br><em>Antrenman</em> Programın</h1>
+  <p>Hedeflerine, seviyene ve müsait günlerine göre yapay zeka destekli program oluştur.</p>
+</div>
+
+<div class="main">
+
+  <div class="form-card">
+    <div class="form-title">
+      <span>💪</span>
+      Bilgilerini Gir
+    </div>
+
+    <div class="field">
+      <label>Hedefin</label>
+      <div class="chips" id="goalChips">
+        <button class="chip" onclick="selectChip(this, 'goal')">Kilo vermek</button>
+        <button class="chip" onclick="selectChip(this, 'goal')">Kas yapmak</button>
+        <button class="chip" onclick="selectChip(this, 'goal')">Dayanıklılık</button>
+        <button class="chip" onclick="selectChip(this, 'goal')">Vücut şekillendirme</button>
+        <button class="chip" onclick="selectChip(this, 'goal')">Genel sağlık</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Fitness Seviyesi</label>
+      <div class="chips" id="levelChips">
+        <button class="chip" onclick="selectChip(this, 'level')">Başlangıç</button>
+        <button class="chip" onclick="selectChip(this, 'level')">Orta</button>
+        <button class="chip" onclick="selectChip(this, 'level')">İleri</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Haftada Kaç Gün?</label>
+      <div class="chips" id="daysChips">
+        <button class="chip" onclick="selectChip(this, 'days')">2 gün</button>
+        <button class="chip" onclick="selectChip(this, 'days')">3 gün</button>
+        <button class="chip" onclick="selectChip(this, 'days')">4 gün</button>
+        <button class="chip" onclick="selectChip(this, 'days')">5 gün</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Ekipman (opsiyonel)</label>
+      <div class="chips" id="equipChips">
+        <button class="chip" onclick="selectChip(this, 'equip')">Ev (ekipmansız)</button>
+        <button class="chip" onclick="selectChip(this, 'equip')">Dambıl</button>
+        <button class="chip" onclick="selectChip(this, 'equip')">Spor salonu</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Eklemek İstediklerin (opsiyonel)</label>
+      <textarea id="notes" placeholder="Örn: Bel ağrım var, koşmayı sevmiyorum..."></textarea>
+    </div>
+
+    <button class="btn" id="generateBtn" onclick="generateProgram()">
+      <span id="btnText">Program Oluştur</span>
+    </button>
+
+    <div class="error-card" id="errorCard">
+      Bir hata oluştu. Lütfen tekrar deneyin.
+    </div>
+  </div>
+
+  <div class="result-card" id="resultCard">
+    <div class="result-header">
+      <div class="result-icon">🏋️</div>
+      <div>
+        <div class="result-title">Senin Programın</div>
+        <div class="result-subtitle">AI tarafından kişiselleştirildi</div>
+      </div>
+    </div>
+    <div class="result-text" id="resultText"></div>
+    <a href="https://www.shopier.com/diyetisyenruveydademirkiran/45894277" target="_blank" class="shopier-btn">
+      💳 Detaylı Rapor Satın Al — 299 ₺
+    </a>
+  </div>
+
+</div>
+
+<div class="footer">
+  <a href="https://dytruveyda.com">dytruveyda.com</a> · Diyetisyen Rüveyda Demirkıran · AI destekli sağlık araçları
+</div>
+
+<script>
+  const selected = { goal: '', level: '', days: '', equip: '' };
+
+  function selectChip(el, type) {
+    const group = el.parentElement.querySelectorAll('.chip');
+    group.forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    selected[type] = el.textContent;
+  }
+
+  async function generateProgram() {
+    if (!selected.goal || !selected.level || !selected.days) {
+      alert('Lütfen hedef, seviye ve gün sayısını seç.');
+      return;
+    }
+
+    const btn = document.getElementById('generateBtn');
+    const btnText = document.getElementById('btnText');
+    const errorCard = document.getElementById('errorCard');
+    const resultCard = document.getElementById('resultCard');
+
+    btn.disabled = true;
+    btnText.innerHTML = '<div class="spinner"></div> Hazırlanıyor...';
+    errorCard.classList.remove('visible');
+    resultCard.classList.remove('visible');
+
+    // Gönderilecek bilgiler
+    const payload = {
+        goal: selected.goal,
+        level: selected.level,
+        days: selected.days,
+        equip: selected.equip || 'Belirtilmedi',
+        notes: document.getElementById('notes').value || 'Yok'
+    };
+
+    try {
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json();
+
+      if (data.content && data.content[0]) {
+        document.getElementById('resultText').textContent = data.content[0].text;
+        resultCard.classList.add('visible');
+        resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        throw new Error('API yanıtı geçersiz');
+      }
+    } catch (e) {
+      console.error("Hata:", e);
+      errorCard.classList.add('visible');
+    }
+
+    btn.disabled = false;
+    btnText.textContent = 'Program Oluştur';
+  }
+</script>
+
+</body>
+</html>
